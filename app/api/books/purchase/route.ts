@@ -3,9 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId, coins } = await req.json();
+    const { userId, price, bookId } = await req.json();
 
-    if (!userId || typeof coins !== "number" || coins <= 0) {
+    if (!userId || !bookId || typeof price !== "number" || price <= 0) {
       return NextResponse.json(
         { error: "Invalid input parameters" },
         { status: 400 }
@@ -22,9 +22,10 @@ export async function POST(req: NextRequest) {
     }
 
     const user = users[0];
-    const updatedCoins = user.coins + coins;
+    const updatedCoins = user.coins - price;
+    const updatedPurchasedBooks = [...user.purchasedBooks, bookId];
 
-    const { success, error } = await updateUser(userId, { coins: updatedCoins });
+    const { success, error } = await updateUser(userId, { coins: updatedCoins, purchasedBooks: updatedPurchasedBooks });
 
     if (!success || error) {
       return NextResponse.json(
