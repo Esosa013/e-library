@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import Search from '@/components/search';
+import Search from '@/components/search/search';
 
 
 export default function Home() {
